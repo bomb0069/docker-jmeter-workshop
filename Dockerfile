@@ -53,11 +53,15 @@ RUN apt-get update \
 
 RUN echo "PATH=$PATH:$JMETER_BIN" >> /etc/profile
 
-EXPOSE 4200
-
-VOLUME /etc/shellinabox /var/log/supervisor /home
+VOLUME /etc/shellinabox /var/log/supervisor /home /jmeter-script /reports
 
 ADD assets/entrypoint.sh /usr/local/sbin/
+
+ADD example /jmeter-script/
+
+ADD reports /reports
+
+EXPOSE 4200
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["shellinabox"]
