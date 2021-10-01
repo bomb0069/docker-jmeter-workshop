@@ -1,7 +1,6 @@
 FROM nginx:latest
 
 ENV SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css,Reverse:-/etc/shellinabox/options-enabled/00_White-On-Black.css;Colors:+/etc/shellinabox/options-enabled/01+Color-Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css" \
-    SIAB_PORT=4200 \
     SIAB_ADDUSER=true \
     SIAB_USER=guest \
     SIAB_USERID=1000 \
@@ -16,17 +15,15 @@ ENV SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css
     SIAB_PKGS=none \
     SIAB_SCRIPT=none
 
-RUN apt-get update && apt-get install -y openssl curl openssh-client sudo shellinabox && \
- 	#apk add ca-certificates && \
- 	#update-ca-certificates && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    ln -sf '/etc/shellinabox/options-enabled/00+Black on White.css' \
-      /etc/shellinabox/options-enabled/00+Black-on-White.css && \
-    ln -sf '/etc/shellinabox/options-enabled/00_White On Black.css' \
-      /etc/shellinabox/options-enabled/00_White-On-Black.css && \
-    ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
-      /etc/shellinabox/options-enabled/01+Color-Terminal.css
+RUN apt-get update && apt-get install -y openssl curl openssh-client sudo shellinabox \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && ln -sf '/etc/shellinabox/options-enabled/00+Black on White.css' \
+         /etc/shellinabox/options-enabled/00+Black-on-White.css \
+    && ln -sf '/etc/shellinabox/options-enabled/00_White On Black.css' \
+         /etc/shellinabox/options-enabled/00_White-On-Black.css \
+    && ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
+         /etc/shellinabox/options-enabled/01+Color-Terminal.css
 
 
 ARG JMETER_VERSION="5.3"
@@ -39,12 +36,8 @@ ARG TZ="Asia/Bangkok"
 ENV TZ ${TZ}
 
 RUN apt-get update \
-# 	&& apk upgrade \
-# 	&& apk add ca-certificates \
-# 	&& update-ca-certificates \
     && apt-get install -y openjdk-11-jre tzdata unzip bash \
-# 	&& apk add --no-cache nss \
-# 	&& rm -rf /var/cache/apk/* \
+    && apt-get clean \
  	&& mkdir -p /tmp/dependencies \
  	&& curl -L --silent ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz  \
  	&& mkdir -p /opt  \

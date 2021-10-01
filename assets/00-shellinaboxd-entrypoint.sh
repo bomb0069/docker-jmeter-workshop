@@ -8,7 +8,7 @@ hex()
 }
 
 echo "Preparing container .."
-COMMAND="/usr/bin/shellinaboxd -b --debug --localhost-only --no-beep --disable-peer-check -u shellinabox -g shellinabox -c /var/lib/shellinabox -p ${SIAB_PORT} --user-css ${SIAB_USERCSS}"
+COMMAND="/usr/bin/shellinaboxd -b --debug --localhost-only --no-beep --disable-peer-check -u shellinabox -g shellinabox -c /var/lib/shellinabox -p 4200 --user-css ${SIAB_USERCSS}"
 
 if [ "$SIAB_PKGS" != "none" ]; then
 	set +e
