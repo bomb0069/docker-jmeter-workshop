@@ -28,16 +28,11 @@ RUN apt-get update && apt-get install -y openssl curl openssh-client sudo shelli
     ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
       /etc/shellinabox/options-enabled/01+Color-Terminal.css
 
-EXPOSE 4200
-
-VOLUME /etc/shellinabox /var/log/supervisor /home
-
-ADD assets/entrypoint.sh /usr/local/sbin/
-
 ARG JMETER_VERSION="5.3"
+
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
-ENV	JMETER_BIN	${JMETER_HOME}/bin
-ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+ENV	JMETER_BIN ${JMETER_HOME}/bin
+ENV	JMETER_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 
 ARG TZ="Asia/Bangkok"
 ENV TZ ${TZ}
@@ -56,9 +51,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  	&& rm -rf /tmp/dependencies
 
-ENV PATH $PATH:$JMETER_BIN
+RUN echo "PATH=$PATH:$JMETER_BIN" >> /etc/profile
 
-WORKDIR $JMETER_BIN
+EXPOSE 4200
+
+VOLUME /etc/shellinabox /var/log/supervisor /home
+
+ADD assets/entrypoint.sh /usr/local/sbin/
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["shellinabox"]
