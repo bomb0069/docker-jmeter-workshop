@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM nginx:latest
 
 ENV SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css,Reverse:-/etc/shellinabox/options-enabled/00_White-On-Black.css;Colors:+/etc/shellinabox/options-enabled/01+Color-Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css" \
     SIAB_PORT=4200 \
@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y openssl curl openssh-client sudo shelli
     ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
       /etc/shellinabox/options-enabled/01+Color-Terminal.css
 
+
 ARG JMETER_VERSION="5.3"
 
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
@@ -41,7 +42,7 @@ RUN apt-get update \
 # 	&& apk upgrade \
 # 	&& apk add ca-certificates \
 # 	&& update-ca-certificates \
-    && apt-get install -y openjdk-8-jre tzdata unzip bash \
+    && apt-get install -y openjdk-11-jre tzdata unzip bash \
 # 	&& apk add --no-cache nss \
 # 	&& rm -rf /var/cache/apk/* \
  	&& mkdir -p /tmp/dependencies \
@@ -55,13 +56,12 @@ RUN echo "PATH=$PATH:$JMETER_BIN" >> /etc/profile
 
 VOLUME /etc/shellinabox /var/log/supervisor /home /jmeter-script /reports
 
-ADD assets/entrypoint.sh /usr/local/sbin/
-
 ADD example /jmeter-script/
 
-ADD reports /reports
+RUN mkdir /reports
 
-EXPOSE 4200
+COPY assets/00-shellinaboxd-entrypoint.sh /docker-entrypoint.d/
 
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["shellinabox"]
+RUN chmod +x /docker-entrypoint.d/00-shellinaboxd-entrypoint.sh
+
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
