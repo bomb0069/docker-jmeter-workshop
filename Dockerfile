@@ -58,3 +58,5 @@ COPY assets/00-shellinaboxd-entrypoint.sh /docker-entrypoint.d/
 RUN chmod +x /docker-entrypoint.d/00-shellinaboxd-entrypoint.sh
 
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+ADD lib ${JMETER_HOME}/lib/ext

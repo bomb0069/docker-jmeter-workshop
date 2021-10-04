@@ -40,6 +40,9 @@ if [ "${SIAB_ADDUSER}" == "true" ]; then
 		echo "${SIAB_USER}:${SIAB_PASSWORD}" | /usr/sbin/chpasswd
 		chown ${SIAB_USER} /reports
 		chgrp ${SIAB_GROUP} /reports
+
+		chown ${SIAB_USER} -R /jmeter-script
+		chgrp ${SIAB_GROUP} -R /jmeter-script
 		unset SIAB_PASSWORD
 	fi
 fi
