@@ -3,6 +3,7 @@ FROM nginx:latest
 ENV SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css,Reverse:-/etc/shellinabox/options-enabled/00_White-On-Black.css;Colors:+/etc/shellinabox/options-enabled/01+Color-Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css" \
     SIAB_ADDUSER=true \
     SIAB_USER=guest \
+    SIAB_USER_COUNT=10 \
     SIAB_USERID=1000 \
     SIAB_GROUP=guest \
     SIAB_GROUPID=1000 \
@@ -58,5 +59,7 @@ COPY assets/00-shellinaboxd-entrypoint.sh /docker-entrypoint.d/
 RUN chmod +x /docker-entrypoint.d/00-shellinaboxd-entrypoint.sh
 
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY assets/limits.conf /etc/security/limits.conf
 
 ADD lib ${JMETER_HOME}/lib/ext
