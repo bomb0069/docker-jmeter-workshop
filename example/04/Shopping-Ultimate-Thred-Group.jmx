@@ -180,7 +180,7 @@
               </elementProp>
               <elementProp name="influxdbUrl" elementType="Argument">
                 <stringProp name="Argument.name">influxdbUrl</stringProp>
-                <stringProp name="Argument.value">http://a53886c2fb04744258efbb2f246e8c61-1608499968.ap-southeast-1.elb.amazonaws.com:8086/write?db=jmeter</stringProp>
+                <stringProp name="Argument.value">http://${__P(influxdb,influxdb-service:8086)}/write?db=jmeter</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
               <elementProp name="application" elementType="Argument">
